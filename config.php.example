@@ -1,0 +1,6 @@
+<?php
+
+// Rename to config.php and add your own values.
+
+$config['KANBANIZE']['API_KEY'] = '';
+$config['KANBANIZE']['SUBDOMAIN'] = '';
