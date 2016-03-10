@@ -1,5 +1,12 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/middlebury/KanbanizePHP"
+        }
+    ],
     "require": {
-        "simshaun/recurr": "^0.6.1"
+        "simshaun/recurr": "^0.6.1",
+        "middlebury/KanbanizePHP": "dev-master"
     }
 }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e9d514680fae7d670b30ebca4bf5c1bc",
-    "content-hash": "e235c9b1a633e5f4e6d56424f2d1aace",
+    "hash": "a9c8679bf07c316a9fa1382d01825c26",
+    "content-hash": "6f1b457afa4d4b32a5755da07d1d3634",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -74,6 +74,35 @@
             "time": "2015-04-14 22:21:58"
         },
         {
+            "name": "middlebury/KanbanizePHP",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/middlebury/KanbanizePHP.git",
+                "reference": "9781ecd7ad7898077dad071c173fd0c6d30d0aa6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/middlebury/KanbanizePHP/zipball/9781ecd7ad7898077dad071c173fd0c6d30d0aa6",
+                "reference": "9781ecd7ad7898077dad071c173fd0c6d30d0aa6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "description": "API wrapper for Kanbanize",
+            "support": {
+                "source": "https://github.com/middlebury/KanbanizePHP/tree/master"
+            },
+            "time": "2016-03-10 05:39:40"
+        },
+        {
             "name": "simshaun/recurr",
             "version": "v0.6.1",
             "source": {
@@ -131,7 +160,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "middlebury/kanbanizephp": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
