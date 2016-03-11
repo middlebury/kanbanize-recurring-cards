@@ -29,7 +29,7 @@ Usage
 =====
 
 The `bin/krc_cron` command should be set up to run via cron no more frequently than
-once per hour. The command has one required argument `--cron_freq_hours=<hours>`
+once per hour. The command has one required argument `--cron-freq-hours=<hours>`
 which takes an integer number of hours that indicate time-window between cron runs (minimum 1 hour).
 
 Card definitions should be placed in the `cards/` directory as `.json` files.
@@ -39,7 +39,7 @@ will run through all of your card definitions for each cron-run in the time-fram
 specify and will provide a statement of when cards would be created without actually
 creating them. Example:
 
-    bin/krc_test --start-date=2016-01-01 --end-date=2017-01-01 --cron_freq_hours=24
+    bin/krc_test --start-date=2016-01-01 --end-date=2017-01-01 --cron-freq-hours=24
 
 Card Definitions
 ----------------
