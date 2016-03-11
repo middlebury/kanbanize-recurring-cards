@@ -6,10 +6,10 @@ require_once(dirname(__FILE__)."/../lib/ArgumentParser.php");
 
 $usage = "Usage:
 
-  ".$argv[0]." --start-date --end-date --cron_freq_hours=<hours>
+  ".$argv[0]." --start-date --end-date --cron-freq-hours=<hours>
 
 Options:
-  --cron_freq_hours=<hours> (Required)
+  --cron-freq-hours=<hours> (Required)
             A positive integer number of hours between cron runs.
             Used to define the window to match recurrences against.
 
@@ -31,7 +31,7 @@ try {
   exit(1);
 }
 $allowed_options = array(
-  'cron_freq_hours' => true,
+  'cron-freq-hours' => true,
   'start-date' => true,
   'end-date' => true,
 );
@@ -41,14 +41,14 @@ if (count($unknown_options) > 0) {
   fwrite(STDERR, $usage);
   exit(1);
 }
-// cron_freq_hours
-if (empty($options['cron_freq_hours'])
-  || filter_var($options['cron_freq_hours'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))) === false)
+// cron-freq-hours
+if (empty($options['cron-freq-hours'])
+  || filter_var($options['cron-freq-hours'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))) === false)
 {
   fwrite(STDERR, $usage);
   exit(1);
 } else {
-  $cron_freq_hours = $options['cron_freq_hours'];
+  $cron_freq_hours = $options['cron-freq-hours'];
 }
 // start-date
 try {
@@ -72,7 +72,7 @@ if ($date > $end) {
   exit(1);
 }
 
-$base_command = dirname(__FILE__).'/krc_cron --test --cron_freq_hours='.$cron_freq_hours;
+$base_command = dirname(__FILE__).'/krc_cron --test --cron-freq-hours='.$cron_freq_hours;
 $interval = new DateInterval('PT'.$cron_freq_hours.'H');
 while ($date < $end) {
   $command = $base_command.' --override-run-time="'.$date->format('Y-m-d H:i:s').'"';
