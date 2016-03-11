@@ -28,8 +28,9 @@ class Card {
 
   public function __construct(array $data) {
     // hour
-    $options = array('min_range' => 0, 'max_range' => 23);
-    if (empty($data['hour']) || filter_var($data['hour'], FILTER_VALIDATE_INT, $options) === false) {
+    if (empty($data['hour'])
+      || filter_var($data['hour'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 23))) === false)
+    {
       throw new \Exception("hour must be an integer between 0 and 23. ".$data['hour']." given.");
     }
     // start_date
@@ -37,8 +38,9 @@ class Card {
       throw new \Exception("start_date must be a valid date string in the YYYY-MM-DD format. ".$data['start_date']." given.");
     }
     // board
-    $options = array('min_range' => 0);
-    if (empty($data['board']) || filter_var($data['board'], FILTER_VALIDATE_INT, $options) === false) {
+    if (empty($data['board'])
+      || filter_var($data['board'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0))) === false) 
+    {
       throw new \Exception("board must be an integer between 0 and 23. ".$data['board']." given.");
     }
     // recurrence
