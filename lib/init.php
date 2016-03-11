@@ -16,4 +16,6 @@ $kanbanize->setApiKey($config['KANBANIZE']['API_KEY']);
 
 if (empty($config['TIMEZONE'])) {
   date_default_timezone_set('UTC');
+} else {
+  date_default_timezone_set($config['TIMEZONE']);
 }
