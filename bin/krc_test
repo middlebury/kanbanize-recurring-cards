@@ -21,6 +21,8 @@ Options:
             A DateTime string like '2016-03-20 08:03'.
             Ending date for the simulation run.
 
+  --show-all-dates (Optional)
+            Display each date evaluated during the simulation run.
 ";
 
 try {
@@ -34,6 +36,7 @@ $allowed_options = array(
   'cron-freq-hours' => true,
   'start-date' => true,
   'end-date' => true,
+  'show-all-dates' => true,
 );
 $unknown_options = array_diff_key($options, $allowed_options);
 if (count($unknown_options) > 0) {
@@ -71,6 +74,12 @@ if ($date > $end) {
   fwrite(STDERR, $usage);
   exit(1);
 }
+// show-all-dates
+if (isset($options['show-all-dates'])) {
+  $show_all_dates = true;
+} else {
+  $show_all_dates = false;
+}
 
 $base_command = dirname(__FILE__).'/krc_cron --test --cron-freq-hours='.$cron_freq_hours;
 $interval = new DateInterval('PT'.$cron_freq_hours.'H');
@@ -83,8 +92,11 @@ while ($date < $end) {
     fwrite(STDERR, "Output:\n\t".implode("\n\t", $output)."\n");
     exit(2);
   }
+  if ($show_all_dates || !empty($output)) {
+    print $date->format('l, M j, Y H:i')."\n";
+  }
   if (!empty($output)) {
-    print $date->format('l, M j, Y H:i')."\n\t";
+    print "\t";
     print implode("\n\t", $output);
     print "\n";
   }
