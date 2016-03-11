@@ -2,12 +2,31 @@
 <?php
 
 require_once(dirname(__FILE__)."/../lib/init.php");
+require_once(dirname(__FILE__)."/../lib/ArgumentParser.php");
 
-$poll_frequency_hours = 24; // @todo - Set this at run-time.
+$usage = "Usage:
+
+  ".$argv[0]." --cron_freq_hours=<hours>
+
+Options:
+  --cron_freq_hours=<hours>    An integer number of hours between cron runs. Used to
+                               define the window to match recurrences against.
+
+";
+
+$options = getOptionArray(__FILE__, $argv);
+$filter_int_options = array('min_range' => 1);
+if (empty($options['cron_freq_hours']) || filter_var($options['cron_freq_hours'], FILTER_VALIDATE_INT, $options) === false) {
+  fwrite(STDERR, $usage);
+  exit(1);
+} else {
+  $cron_freq_hours = $options['cron_freq_hours'];
+}
+
 $now = new DateTime();
 $start = new DateTime($now->format('Y-m-d H:00:00'));
 $end = new DateTime($now->format('Y-m-d H:00:00'));
-$end->add(new DateInterval('PT'.($poll_frequency_hours - 1).'H59M59S'));
+$end->add(new DateInterval('PT'.($cron_freq_hours - 1).'H59M59S'));
 
 $data_dir = realpath(dirname(__FILE__)."/../cards");
 $data_files = scandir($data_dir);
@@ -27,3 +46,5 @@ foreach ($data_files as $file) {
     }
   }
 }
+
+exit(0);
