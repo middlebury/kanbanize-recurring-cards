@@ -6,11 +6,20 @@ require_once(dirname(__FILE__)."/../lib/ArgumentParser.php");
 
 $usage = "Usage:
 
-  ".$argv[0]." --cron_freq_hours=<hours>
+  ".$argv[0]." --cron_freq_hours=<hours> [--override-run-time=<DateTime string>]
 
 Options:
-  --cron_freq_hours=<hours>    A positive integer number of hours between cron runs.
-                               Used to define the window to match recurrences against.
+  --cron_freq_hours=<hours> (Required)
+            A positive integer number of hours between cron runs.
+            Used to define the window to match recurrences against.
+
+  --override-run-time=<DateTime string> (Optional)
+            A DateTime string like '2016-03-20 08:03'.
+            Used to test/simulate a cron-run at a different date.
+
+  --test
+            Do not create cards that match, but rather print out information
+            about which cards would be created.
 
 ";
 
@@ -23,6 +32,8 @@ try {
 }
 $allowed_options = array(
   'cron_freq_hours' => true,
+  'override-run-time' => true,
+  'test' => true,
 );
 $unknown_options = array_diff_key($options, $allowed_options);
 if (count($unknown_options) > 0) {
@@ -39,8 +50,25 @@ if (empty($options['cron_freq_hours'])
 } else {
   $cron_freq_hours = $options['cron_freq_hours'];
 }
+// override-run-time
+if (empty($options['override-run-time'])) {
+  $now = new DateTime();
+} else {
+  try {
+    $now = new DateTime($options['override-run-time']);
+  } catch (Exception $e) {
+    fwrite(STDERR, 'Invalid --override-run-time option: '.$e->getMessage()."\n\n");
+    fwrite(STDERR, $usage);
+    exit(1);
+  }
+}
+// test
+if (empty($options['test'])) {
+  $testing = false;
+} else {
+  $testing = true;
+}
 
-$now = new DateTime();
 $start = new DateTime($now->format('Y-m-d H:00:00'));
 $end = new DateTime($now->format('Y-m-d H:00:00'));
 $end->add(new DateInterval('PT'.($cron_freq_hours - 1).'H59M59S'));
@@ -56,7 +84,11 @@ foreach ($data_files as $file) {
       }
       $card = new \KanbanizeRecurringCards\Card($data);
       if ($card->recurrsBetween($start, $end)) {
-        $card->addToKanbanize($kanbanize);
+        if ($testing) {
+          print "Add card from: $file\n";
+        } else {
+          $card->addToKanbanize($kanbanize);
+        }
       }
     } catch (Exception $e) {
       fwrite(STDERR, "Error checking/adding card defined in $data_dir/$file: ".$e->getMessage()."\n");
