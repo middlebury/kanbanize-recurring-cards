@@ -16,7 +16,9 @@ $kanbanize = EtuDev_KanbanizePHP_API::getInstance();
 $kanbanize->setSubdomain($config['KANBANIZE']['SUBDOMAIN']);
 $kanbanize->setApiKey($config['KANBANIZE']['API_KEY']);
 
-date_default_timezone_set('America/New_York'); // @todo - configure this.
+if (empty($config['TIMEZONE'])) {
+  date_default_timezone_set('UTC'); // @todo - configure this.
+}
 $poll_frequency_hours = 24; // @todo - Set this at run-time.
 $now = new DateTime();
 $start = new DateTime($now->format('Y-m-d H:00:00'));
