@@ -66,7 +66,7 @@ function getOptionArray($parent, $argv) {
 
 		// Otherwise, if it begins with a -, there is a problem
 		else if (preg_match("/^-/", $argv[$i])) {
-			die ("Mal-formed option, ".$argv[$i]);
+			throw new Exception ("Mal-formed option, ".$argv[$i]);
 		}
 
 		// If its not an option, then it must be a param
