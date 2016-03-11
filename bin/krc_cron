@@ -76,6 +76,7 @@ $end->add(new DateInterval('PT'.($cron_freq_hours - 1).'H59M59S'));
 $template_dir = realpath(dirname(__FILE__)."/../templates");
 $data_dir = realpath(dirname(__FILE__)."/../cards");
 $data_files = scandir($data_dir);
+$num_definitions = 0;
 foreach ($data_files as $file) {
   if (preg_match('/.+\.json$/i', $file)) {
     try {
@@ -108,6 +109,7 @@ foreach ($data_files as $file) {
       }
       // Check the card.
       $card = new \KanbanizeRecurringCards\Card($data);
+      $num_definitions++;
       if ($card->recurrsBetween($start, $end)) {
         if ($testing) {
           print "Add card from: $file\n";
@@ -121,4 +123,8 @@ foreach ($data_files as $file) {
   }
 }
 
+if (!$num_definitions) {
+  fwrite(STDERR, "No card definitions found in $data_dir/\n");
+  exit(3);
+}
 exit(0);
