@@ -39,7 +39,7 @@ class Card {
     }
     // board
     if (empty($data['board'])
-      || filter_var($data['board'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0))) === false) 
+      || filter_var($data['board'], FILTER_VALIDATE_INT, array('options' => array('min_range' => 0))) === false)
     {
       throw new \Exception("board must be an integer between 0 and 23. ".$data['board']." given.");
     }

@@ -73,15 +73,40 @@ $start = new DateTime($now->format('Y-m-d H:00:00'));
 $end = new DateTime($now->format('Y-m-d H:00:00'));
 $end->add(new DateInterval('PT'.($cron_freq_hours - 1).'H59M59S'));
 
+$template_dir = realpath(dirname(__FILE__)."/../templates");
 $data_dir = realpath(dirname(__FILE__)."/../cards");
 $data_files = scandir($data_dir);
 foreach ($data_files as $file) {
   if (preg_match('/.+\.json$/i', $file)) {
     try {
+      // Load the data.
       $data = json_decode(file_get_contents($data_dir.'/'.$file), true);
       if (is_null($data)) {
         throw new Exception("Error decoding json data from $data_dir/$file");
       }
+      // Add default values from a template.
+      if (!empty($data['templates'])) {
+        if (!is_array($data['templates'])) {
+          throw new Exception('the templates parameter in $data_dir/$file must be empty or an array.');
+        }
+        foreach ($data['templates'] as $template_name) {
+          $template_file = $template_dir.'/'.$template_name.'.json';
+          if (!file_exists($template_file)) {
+            throw new Exception("$data_dir/$file specifies a template '$template_name' that does not exist at $template_file");
+          } else {
+            $template = json_decode(file_get_contents($template_file), true);
+            if (is_null($template)) {
+              throw new Exception("Error decoding json data from $template_file");
+            }
+            foreach ($template as $key => $val) {
+              if (!isset($data[$key])) {
+                $data[$key] = $val;
+              }
+            }
+          }
+        }
+      }
+      // Check the card.
       $card = new \KanbanizeRecurringCards\Card($data);
       if ($card->recurrsBetween($start, $end)) {
         if ($testing) {

@@ -80,6 +80,28 @@ Custom fields are supported and can be specified by name.
   * `FREQ=MONTHLY;BYDAY=MO;BYSETPOS=1` - Monthly on the first Monday of the month.
   * `FREQ=YEARLY;BYMONTH=2,6,9;BYMONTHDAY=1` - 3 times per year on Feb 1, Jun 1, and Sept 1.
 
+Templates
+---------
+Templates allow you to to define sets of default values that can be inherited across your card
+definitions in cards that specify the template in their `templates` property:
+
+    {
+      "templates": ["weekly"],
+      "title": "Updates WP plugins and themes",
+      ...
+    }
+
+Here's an example of a template you might put at `templates/weekly.json`:
+
+    {
+      "hour": 8,
+      "start_date": "2016-01-01",
+      "recurrence": "FREQ=WEEKLY;BYDAY=MO"
+    }
+
+Template values only get applied if the value is not specified in the card definition
+itself or a previous template (if multiple templates are applied).
+
 Copyright and License
 ===================
 This software is Copyright © *The President and Fellows of Middlebury College* and is provided as Free Software under the terms of the [GPLv3 (or later) license](http://www.gnu.org/licenses/gpl-3.0.en.html).
