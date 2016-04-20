@@ -21,6 +21,9 @@ Options:
             Do not create cards that match, but rather print out information
             about which cards would be created.
 
+  --print-card-data
+            When --test is specified, also print details about each card.
+
 ";
 
 try {
@@ -34,6 +37,7 @@ $allowed_options = array(
   'cron-freq-hours' => true,
   'override-run-time' => true,
   'test' => true,
+  'print-card-data' => true,
 );
 $unknown_options = array_diff_key($options, $allowed_options);
 if (count($unknown_options) > 0) {
@@ -65,8 +69,15 @@ if (empty($options['override-run-time'])) {
 // test
 if (empty($options['test'])) {
   $testing = false;
+  $print_card_data = false;
 } else {
   $testing = true;
+  $print_card_data = (!empty($options['print-card-data']));
+}
+
+// Backward compatability for PHP < 5.4.
+if (!defined('JSON_PRETTY_PRINT')) {
+  define('JSON_PRETTY_PRINT', 0);
 }
 
 $start = new DateTime($now->format('Y-m-d H:00:00'));
@@ -113,6 +124,10 @@ foreach ($data_files as $file) {
       if ($card->recurrsBetween($start, $end)) {
         if ($testing) {
           print "Add card from: $file\n";
+          if ($print_card_data) {
+            print "\t".rtrim(str_replace("\n", "\n\t", wordwrap(json_encode($card->getData($kanbanize), JSON_PRETTY_PRINT), 80, "\n", TRUE)));
+            print "\n";
+          }
         } else {
           $card->addToKanbanize($kanbanize);
         }

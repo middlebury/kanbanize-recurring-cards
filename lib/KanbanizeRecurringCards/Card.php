@@ -65,6 +65,10 @@ class Card {
   }
 
   public function addToKanbanize(\EtuDev_KanbanizePHP_API $kanbanize) {
+    return $kanbanize->createNewTask($this->data['board'], $this->getData($kanbanize));
+  }
+
+  public function getData(\EtuDev_KanbanizePHP_API $kanbanize) {
     $data = array();
     foreach (self::$optional_elements as $key) {
       if (!empty($this->data[$key])) {
@@ -76,7 +80,7 @@ class Card {
         $data[$key] = $this->data[$key];
       }
     }
-    return $kanbanize->createNewTask($this->data['board'], $data);
+    return $data;
   }
 
   protected function getBoardCustomFields(\EtuDev_KanbanizePHP_API $kanbanize, $board_id) {
