@@ -80,6 +80,12 @@ class Card {
         $data[$key] = $this->data[$key];
       }
     }
+    // Add a deadline offset from our add-date if one is specified.
+    if ($this->data['deadline-offset']) {
+      $my_start = new \DateTime();
+      $offset = new \DateInterval($this->data['deadline-offset']);
+      $data['deadline'] = $my_start->add($offset)->format('Y-m-d');
+    }
     return $data;
   }
 

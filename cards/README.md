@@ -10,5 +10,6 @@ Here's an example of a card definition you might put at `my-card.json`:
       "description": "Documentation can be found in the <a href=\"http://wiki.example.edu/system_updates\">wiki</a>.",
       "color": "794d20",
       "priority": "Average",
-      "tags": "WordPress,Periodic"
+      "tags": "WordPress,Periodic",
+      "deadline-offset": "P5D"
     }

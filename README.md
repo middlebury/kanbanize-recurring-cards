@@ -80,6 +80,9 @@ Custom fields are supported and can be specified by name.
   * `FREQ=MONTHLY;BYDAY=MO;BYSETPOS=1` - Monthly on the first Monday of the month.
   * `FREQ=YEARLY;BYMONTH=2,6,9;BYMONTHDAY=1` - 3 times per year on Feb 1, Jun 1, and Sept 1.
 
+* **deadline-offset** - An optional [ISO-8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) such as `P5D`.
+  This field will set a `deadline` field on the card offset from the current date by this much.
+
 Templates
 ---------
 Templates allow you to to define sets of default values that can be inherited across your card
